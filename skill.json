@@ -1,0 +1,77 @@
+{
+  "name": "genpark-personal-agent-adaptive-caffeine-adenosine-half-life-pacer-skill",
+  "version": "1.0.0",
+  "title": "Adaptive Caffeine Adenosine Half-Life & Sleep Latency Pacer Skill",
+  "description": "Pharmacokinetic caffeine clearance half-life curve (CYP1A2 enzyme rate), bedtime adenosine sleep latency guard, and caffeine cutoff hour optimizer. Built for GenPark (https://www.genpark.ai).",
+  "homepage": "https://www.genpark.ai",
+  "linkedin": "https://www.linkedin.com/company/92955550",
+  "category": "personal-agent",
+  "topics": [
+    "caffeine-metabolism",
+    "adenosine-receptors",
+    "sleep-latency",
+    "cyp1a2",
+    "personal-agent",
+    "model-context-protocol",
+    "genpark"
+  ],
+  "tools": [
+    {
+      "name": "calculate_circulating_caffeine_at_bedtime",
+      "description": "Calculate residual bloodstream caffeine mg at bedtime based on doses, timestamps, and CYP1A2 metabolic rate.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "caffeine_intakes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "mg": {
+                  "type": "number"
+                },
+                "time_hh_mm": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "bedtime_hh_mm": {
+            "type": "string"
+          },
+          "metabolizer_phenotype": {
+            "type": "string",
+            "enum": [
+              "fast_cyp1a2",
+              "normal_cyp1a2",
+              "slow_cyp1a2"
+            ]
+          }
+        },
+        "required": [
+          "caffeine_intakes",
+          "bedtime_hh_mm"
+        ]
+      }
+    },
+    {
+      "name": "prescribe_caffeine_curfew",
+      "description": "Compute absolute caffeine curfew hour to keep residual caffeine < 25mg at bedtime.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "target_bedtime_hh_mm": {
+            "type": "string"
+          },
+          "typical_dose_mg": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "target_bedtime_hh_mm",
+          "typical_dose_mg"
+        ]
+      }
+    }
+  ]
+}
